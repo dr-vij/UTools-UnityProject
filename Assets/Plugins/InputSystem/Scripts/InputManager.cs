@@ -1,77 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace ViJ
+namespace ViJApps
 {
-    /// <summary>
-    /// Interaction object. it is used for all interaction subscriptions
-    /// </summary>
-    public class InteractionObject : MonoBehaviour
-    {
-
-    }
-
-    /// <summary>
-    /// This object is used to remove object from interaction hierarchy
-    /// </summary>
-    public class InteractionObjectIgnorer : MonoBehaviour
-    {
-
-    }
-
-    public class InputDataContainer
-    {
-        private bool mInputStarted = false;
-
-        public bool InputStarted => mInputStarted;
-
-        public Vector2 PointerPosition = Vector2.zero;
-        public Vector2 PointerDelta = Vector2.zero;
-
-        public void StartInput()
-        {
-            if (!mInputStarted)
-            {
-                ResetInputData();
-                mInputStarted = true;
-            }
-        }
-
-        public void StopInput()
-        {
-            if (mInputStarted)
-            {
-                ResetInputData();
-                mInputStarted = false;
-            }
-        }
-
-        private void ResetInputData()
-        {
-            PointerPosition = Vector3.zero;
-            PointerDelta = Vector3.zero;
-        }
-    }
-
     public class InputManager : MonoBehaviour
     {
-        [SerializeField] private int mDragTriggerDistance = 0;
+        /// <summary>
+        /// This parameters decides how far should drag perform to call Drag. If distance is less, press will be performed
+        /// </summary>
+        [SerializeField] private int mDragOrPressTriggerDistance = 0;
 
         private InputDataContainer mInputData = new InputDataContainer();
 
         private Actions mActions;
-        private List<InteractionObject> mCapturedObjects = new List<InteractionObject>();
         private List<Camera> mCameras = new List<Camera>();
 
         public void RegisterCamera(Camera cam)
         {
             if (!mCameras.Contains(cam))
                 mCameras.Add(cam);
+
+            //We sort cameras by depth for now.
+            mCameras.Sort((cam1, cam2) => cam1.depth.CompareTo(cam2.depth));
         }
 
+        /// <summary>
+        /// Create Actions and subscribe it's events
+        /// </summary>
         private void OnEnable()
         {
             mActions = new Actions();
@@ -83,6 +42,9 @@ namespace ViJ
             mActions.GestureActions.PointerMove.performed += OnPointerMove;
         }
 
+        /// <summary>
+        /// Unsubscribe from all events and dispose Actions
+        /// </summary>
         private void OnDisable()
         {
             mActions.GestureActions.PointerStart.performed -= OnPointerPerformed;
@@ -94,20 +56,35 @@ namespace ViJ
         }
 
         /// <summary>
-        /// Called when pointer down
+        /// Called when pointer is down
         /// </summary>
         /// <param name="context"></param>
         private void OnPointerPerformed(InputAction.CallbackContext context)
         {
             mInputData.StartInput();
+            mInputData.PointerDownPosition = context.ReadValue<Vector2>();
+            mInputData.PointerCurrentPosition = context.ReadValue<Vector2>();
+
+            //TODO: PointerDown here and capture dragged object
         }
 
         /// <summary>
-        /// Called when pointer up
+        /// Called when pointer is up
         /// </summary>
         /// <param name="context"></param>
         private void OnPointerCanceled(InputAction.CallbackContext context)
         {
+
+            if (!mInputData.IsDragTriggered)
+            {
+                //TODO: Press here
+            }
+            else
+            {
+                //TODO: Drag end here
+            }
+
+            //TODO: Pointer up here
             mInputData.StopInput();
         }
 
@@ -117,10 +94,30 @@ namespace ViJ
         /// <param name="context"></param>
         private void OnPointerMove(InputAction.CallbackContext context)
         {
-            if (mInputData.InputStarted)
+            var currentPosition = context.ReadValue<Vector2>();
+
+            if (mInputData.IsPointerDownTriggered)
             {
-                mInputData.
+                var lastPosition = mInputData.PointerCurrentPosition;
+                mInputData.PointerCurrentPosition = currentPosition;
+                mInputData.PointerIterationDelta = currentPosition - lastPosition;
+
+                //TODO: Pointer Move can be here ???
+
+                //Calculate distance from pointer down and perform drag
+                var totalDelta = mInputData.PointerCurrentPosition - mInputData.PointerDownPosition;
+                if (!mInputData.IsDragTriggered && totalDelta.magnitude > mDragOrPressTriggerDistance)
+                {
+                    mInputData.TriggerDrag();
+                    //TODO: Drag start here
+                }
+                else if (mInputData.IsDragTriggered)
+                {
+                    //TODO: Drag here
+                }
             }
+
+            //TODO: Pointer Move can be here ???
         }
 
         private List<InteractionObject> Trace3dObjects(Vector2 coord)

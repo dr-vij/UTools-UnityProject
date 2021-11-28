@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace ViJ
+namespace ViJApps
 {
     public partial class @Actions : IInputActionCollection2, IDisposable
     {

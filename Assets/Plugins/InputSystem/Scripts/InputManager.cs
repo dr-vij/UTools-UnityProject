@@ -44,6 +44,11 @@ namespace ViJApps
             mActions.GestureActions.PointerMove.performed += OnPointerMove;
         }
 
+        private void Awake()
+        {
+            TextDebugger.Instance.Log(Screen.dpi);
+        }
+
         /// <summary>
         /// Unsubscribe from all events and dispose Actions
         /// </summary>

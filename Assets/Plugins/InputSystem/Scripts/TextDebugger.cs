@@ -34,13 +34,13 @@ public class TextDebugger : MonoBehaviour
 
     public void Awake() => mText.color = mTextColor;
 
-    public void Log(string logText) => mText.text += logText + Environment.NewLine;
+    public void Log(object logText) => mText.text += logText + Environment.NewLine;
 
-    public void LogWarning(string logText) => LogColored(logText, mWarningColor);
+    public void LogWarning(object logText) => LogColored(logText, mWarningColor);
 
-    public void LogError(string logText) => LogColored(logText, mErrorColor);
+    public void LogError(object logText) => LogColored(logText, mErrorColor);
 
-    public void LogColored(string logText, Color color) => mText.text += $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{logText}</color>{Environment.NewLine}";
+    public void LogColored(object logText, Color color) => mText.text += $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{logText}</color>{Environment.NewLine}";
 
     public void Clear() => mText.text = string.Empty;
 }

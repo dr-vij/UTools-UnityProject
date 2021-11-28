@@ -71,7 +71,7 @@ namespace ViJApps
                 mInputData.PointerPreviousPosition = pointerPosition;
 
                 //TODO: PointerDown here and capture dragged object
-                TextDebugger.Instance.Log($"Pointer down at {mInputData.PointerCurrentPosition}");
+                //TextDebugger.Instance.LogColored($"Pointer down at {mInputData.PointerCurrentPosition}", Color.blue);
             }
             else
             {
@@ -96,16 +96,16 @@ namespace ViJApps
                     if (!mInputData.IsDragTriggered)
                     {
                         //TODO: Press here
-                        TextDebugger.Instance.Log($"Pointer press at {mInputData.PointerCurrentPosition}");
+                        TextDebugger.Instance.LogColored($"Pointer press at {mInputData.PointerCurrentPosition}", Color.magenta);
                     }
                     else
                     {
                         //TODO: Drag end here
-                        TextDebugger.Instance.Log($"Drag end at {mInputData.PointerCurrentPosition}");
+                        TextDebugger.Instance.LogColored($"Drag end at {mInputData.PointerCurrentPosition}", Color.red);
                     }
 
                     //TODO: Pointer up here
-                    TextDebugger.Instance.Log($"Pointer up at {mInputData.PointerCurrentPosition}");
+                    //TextDebugger.Instance.Log($"Pointer up at {mInputData.PointerCurrentPosition}");
                 }
             }
             else
@@ -132,13 +132,13 @@ namespace ViJApps
                 {
                     mInputData.TriggerDrag();
                     //TODO: Drag start here
-                    TextDebugger.Instance.Log($"Drag start at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, current delta: {mInputData.PointerCurrentDelta}, Total delta magnitude {mInputData.PointerTotalDelta.magnitude}");
+                    TextDebugger.Instance.LogColored($"Drag start at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, current delta: {mInputData.PointerCurrentDelta}, Total delta magnitude {mInputData.PointerTotalDelta.magnitude}", Color.green);
 
                 }
                 else if (mInputData.IsDragTriggered)
                 {
                     //TODO: Drag here
-                    TextDebugger.Instance.Log($"Drag performed at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, current delta: {mInputData.PointerCurrentDelta}");
+                    TextDebugger.Instance.LogColored($"Drag performed at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, current delta: {mInputData.PointerCurrentDelta}", Color.yellow);
                 }
             }
 

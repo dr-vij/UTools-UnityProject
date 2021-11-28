@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class TextDebugger : MonoBehaviour
 {
-    [SerializeField] private Text mText = default;
-
+    [SerializeField] private TextMeshProUGUI mText = default;
     [SerializeField] private Color mTextColor = Color.black;
     [SerializeField] private Color mErrorColor = Color.red;
     [SerializeField] private Color mWarningColor = Color.yellow;
@@ -33,28 +32,15 @@ public class TextDebugger : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        mText.color = mTextColor;
-    }
+    public void Awake() => mText.color = mTextColor;
 
-    public void Log(string str)
-    {
-        mText.text += str + Environment.NewLine;
-    }
+    public void Log(string logText) => mText.text += logText + Environment.NewLine;
 
-    public void LogWarning(string str)
-    {
-        mText.text += $"<color=#{ColorUtility.ToHtmlStringRGB(mWarningColor)}>{str}</color>{Environment.NewLine}";
-    }
+    public void LogWarning(string logText) => LogColored(logText, mWarningColor);
 
-    public void LogError(string str)
-    {
-        mText.text += $"<color=#{ColorUtility.ToHtmlStringRGB(mErrorColor)}>{str}</color>{Environment.NewLine}";
-    }
+    public void LogError(string logText) => LogColored(logText, mErrorColor);
 
-    public void Clear()
-    {
-        mText.text = string.Empty;
-    }
+    public void LogColored(string logText, Color color) => mText.text += $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{logText}</color>{Environment.NewLine}";
+
+    public void Clear() => mText.text = string.Empty;
 }

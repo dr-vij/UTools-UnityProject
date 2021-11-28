@@ -90,7 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5962749a3e14cb5b347f4d70a00722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mText: {fileID: 0}
+  mText: {fileID: 5451040460782190259}
+  mTextColor: {r: 0, g: 0, b: 0, a: 1}
+  mErrorColor: {r: 1, g: 0, b: 0, a: 1}
+  mWarningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &7449564649738303708
 GameObject:
   m_ObjectHideFlags: 0

@@ -542,11 +542,11 @@ namespace ViJ
             ]
         },
         {
-            ""name"": ""InputActions"",
+            ""name"": ""GestureActions"",
             ""id"": ""56661286-639e-479d-a086-84a642abb239"",
             ""actions"": [
                 {
-                    ""name"": ""PointerDownUp"",
+                    ""name"": ""PointerStart"",
                     ""type"": ""Button"",
                     ""id"": ""666b1b6f-ead7-492a-9d07-185537713b06"",
                     ""expectedControlType"": ""Button"",
@@ -556,18 +556,9 @@ namespace ViJ
                 },
                 {
                     ""name"": ""PointerMove"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""385f896f-f381-4537-bc4b-590cd164f0f3"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Value"",
-                    ""id"": ""0e887511-58b2-4b76-9447-149f2c78d0d3"",
-                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -581,7 +572,7 @@ namespace ViJ
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PointerDownUp"",
+                    ""action"": ""PointerStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -613,11 +604,10 @@ namespace ViJ
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
-            // InputActions
-            m_InputActions = asset.FindActionMap("InputActions", throwIfNotFound: true);
-            m_InputActions_PointerDownUp = m_InputActions.FindAction("PointerDownUp", throwIfNotFound: true);
-            m_InputActions_PointerMove = m_InputActions.FindAction("PointerMove", throwIfNotFound: true);
-            m_InputActions_Newaction = m_InputActions.FindAction("New action", throwIfNotFound: true);
+            // GestureActions
+            m_GestureActions = asset.FindActionMap("GestureActions", throwIfNotFound: true);
+            m_GestureActions_PointerStart = m_GestureActions.FindAction("PointerStart", throwIfNotFound: true);
+            m_GestureActions_PointerMove = m_GestureActions.FindAction("PointerMove", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -779,54 +769,46 @@ namespace ViJ
         }
         public UIActions @UI => new UIActions(this);
 
-        // InputActions
-        private readonly InputActionMap m_InputActions;
-        private IInputActionsActions m_InputActionsActionsCallbackInterface;
-        private readonly InputAction m_InputActions_PointerDownUp;
-        private readonly InputAction m_InputActions_PointerMove;
-        private readonly InputAction m_InputActions_Newaction;
-        public struct InputActionsActions
+        // GestureActions
+        private readonly InputActionMap m_GestureActions;
+        private IGestureActionsActions m_GestureActionsActionsCallbackInterface;
+        private readonly InputAction m_GestureActions_PointerStart;
+        private readonly InputAction m_GestureActions_PointerMove;
+        public struct GestureActionsActions
         {
             private @Actions m_Wrapper;
-            public InputActionsActions(@Actions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @PointerDownUp => m_Wrapper.m_InputActions_PointerDownUp;
-            public InputAction @PointerMove => m_Wrapper.m_InputActions_PointerMove;
-            public InputAction @Newaction => m_Wrapper.m_InputActions_Newaction;
-            public InputActionMap Get() { return m_Wrapper.m_InputActions; }
+            public GestureActionsActions(@Actions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @PointerStart => m_Wrapper.m_GestureActions_PointerStart;
+            public InputAction @PointerMove => m_Wrapper.m_GestureActions_PointerMove;
+            public InputActionMap Get() { return m_Wrapper.m_GestureActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(InputActionsActions set) { return set.Get(); }
-            public void SetCallbacks(IInputActionsActions instance)
+            public static implicit operator InputActionMap(GestureActionsActions set) { return set.Get(); }
+            public void SetCallbacks(IGestureActionsActions instance)
             {
-                if (m_Wrapper.m_InputActionsActionsCallbackInterface != null)
+                if (m_Wrapper.m_GestureActionsActionsCallbackInterface != null)
                 {
-                    @PointerDownUp.started -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnPointerDownUp;
-                    @PointerDownUp.performed -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnPointerDownUp;
-                    @PointerDownUp.canceled -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnPointerDownUp;
-                    @PointerMove.started -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnPointerMove;
-                    @PointerMove.performed -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnPointerMove;
-                    @PointerMove.canceled -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnPointerMove;
-                    @Newaction.started -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnNewaction;
-                    @Newaction.performed -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnNewaction;
-                    @Newaction.canceled -= m_Wrapper.m_InputActionsActionsCallbackInterface.OnNewaction;
+                    @PointerStart.started -= m_Wrapper.m_GestureActionsActionsCallbackInterface.OnPointerStart;
+                    @PointerStart.performed -= m_Wrapper.m_GestureActionsActionsCallbackInterface.OnPointerStart;
+                    @PointerStart.canceled -= m_Wrapper.m_GestureActionsActionsCallbackInterface.OnPointerStart;
+                    @PointerMove.started -= m_Wrapper.m_GestureActionsActionsCallbackInterface.OnPointerMove;
+                    @PointerMove.performed -= m_Wrapper.m_GestureActionsActionsCallbackInterface.OnPointerMove;
+                    @PointerMove.canceled -= m_Wrapper.m_GestureActionsActionsCallbackInterface.OnPointerMove;
                 }
-                m_Wrapper.m_InputActionsActionsCallbackInterface = instance;
+                m_Wrapper.m_GestureActionsActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @PointerDownUp.started += instance.OnPointerDownUp;
-                    @PointerDownUp.performed += instance.OnPointerDownUp;
-                    @PointerDownUp.canceled += instance.OnPointerDownUp;
+                    @PointerStart.started += instance.OnPointerStart;
+                    @PointerStart.performed += instance.OnPointerStart;
+                    @PointerStart.canceled += instance.OnPointerStart;
                     @PointerMove.started += instance.OnPointerMove;
                     @PointerMove.performed += instance.OnPointerMove;
                     @PointerMove.canceled += instance.OnPointerMove;
-                    @Newaction.started += instance.OnNewaction;
-                    @Newaction.performed += instance.OnNewaction;
-                    @Newaction.canceled += instance.OnNewaction;
                 }
             }
         }
-        public InputActionsActions @InputActions => new InputActionsActions(this);
+        public GestureActionsActions @GestureActions => new GestureActionsActions(this);
         public interface IUIActions
         {
             void OnNavigate(InputAction.CallbackContext context);
@@ -840,11 +822,10 @@ namespace ViJ
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         }
-        public interface IInputActionsActions
+        public interface IGestureActionsActions
         {
-            void OnPointerDownUp(InputAction.CallbackContext context);
+            void OnPointerStart(InputAction.CallbackContext context);
             void OnPointerMove(InputAction.CallbackContext context);
-            void OnNewaction(InputAction.CallbackContext context);
         }
     }
 }

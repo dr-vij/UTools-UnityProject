@@ -11,7 +11,11 @@ namespace ViJApps
 
         public Vector2 PointerDownPosition = Vector2.zero;
         public Vector2 PointerCurrentPosition = Vector2.zero;
-        public Vector2 PointerIterationDelta = Vector2.zero;
+        public Vector2 PointerPreviousPosition = Vector2.zero;
+
+        public Vector2 PointerCurrentDelta => PointerCurrentPosition - PointerPreviousPosition;
+
+        public Vector2 PointerTotalDelta => PointerCurrentPosition - PointerDownPosition;
 
         public bool IsPointerDownTriggered => mIsPointerDownTriggered;
 
@@ -43,9 +47,10 @@ namespace ViJApps
         private void ResetInputData()
         {
             mIsDragTriggered = false;
+
             PointerDownPosition = Vector2.zero;
             PointerCurrentPosition = Vector2.zero;
-            PointerIterationDelta = Vector2.zero;
+            PointerPreviousPosition = Vector2.zero;
         }
     }
 }

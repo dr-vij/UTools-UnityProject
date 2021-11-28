@@ -9,6 +9,8 @@ namespace ViJApps
 {
     public class InputManager : MonoBehaviour
     {
+        private string mUnsopportedPointerMsg = "Unknown control device.Cannot read its position.check if control device is Pointer";
+
         /// <summary>
         /// This parameters decides how far should drag perform to call Drag. If distance is less, press will be performed
         /// </summary>
@@ -16,7 +18,6 @@ namespace ViJApps
         [SerializeField] private bool mRaiseDragOnUpdates = true;
 
         private InputDataContainer mInputData = new InputDataContainer();
-
         private Actions mActions;
         private List<Camera> mCameras = new List<Camera>();
 
@@ -62,20 +63,20 @@ namespace ViJApps
         /// <param name="context"></param>
         private void OnPointerPerformed(InputAction.CallbackContext context)
         {
-            if (context.control.device is Pointer pointer)
+            if (TryReadPointerPosition(context, out var pointerPosition))
             {
-                var pointerPosition = pointer.position.ReadValue();
                 mInputData.StartInput();
                 mInputData.PointerDownPosition = pointerPosition;
                 mInputData.PointerCurrentPosition = pointerPosition;
+                mInputData.PointerPreviousPosition = pointerPosition;
 
                 //TODO: PointerDown here and capture dragged object
-                TextDebugger.Instance.Log("Pointer down");
+                TextDebugger.Instance.Log($"Pointer down at {mInputData.PointerCurrentPosition}");
             }
             else
             {
-                Debug.LogError("Unknown control device. Cannot read its position. check if control device is Pointer");
-            }    
+                Debug.LogError(mUnsopportedPointerMsg);
+            }
         }
 
         /// <summary>
@@ -84,19 +85,33 @@ namespace ViJApps
         /// <param name="context"></param>
         private void OnPointerCanceled(InputAction.CallbackContext context)
         {
-            if (!mInputData.IsDragTriggered)
+            if (TryReadPointerPosition(context, out var pointerPosition))
             {
-                //TODO: Press here
-                TextDebugger.Instance.Log("Pointer press");
+                if (mInputData.IsPointerDownTriggered)
+                {
+                    mInputData.PointerPreviousPosition = mInputData.PointerCurrentPosition;
+                    mInputData.PointerCurrentPosition = pointerPosition;
+
+
+                    if (!mInputData.IsDragTriggered)
+                    {
+                        //TODO: Press here
+                        TextDebugger.Instance.Log($"Pointer press at {mInputData.PointerCurrentPosition}");
+                    }
+                    else
+                    {
+                        //TODO: Drag end here
+                        TextDebugger.Instance.Log($"Drag end at {mInputData.PointerCurrentPosition}");
+                    }
+
+                    //TODO: Pointer up here
+                    TextDebugger.Instance.Log($"Pointer up at {mInputData.PointerCurrentPosition}");
+                }
             }
             else
             {
-                //TODO: Drag end here
-                TextDebugger.Instance.Log("Drag end");
+                Debug.LogError(mUnsopportedPointerMsg);
             }
-
-            //TODO: Pointer up here
-            TextDebugger.Instance.Log("Pointer up");
 
             mInputData.StopInput();
         }
@@ -108,32 +123,39 @@ namespace ViJApps
         private void OnPointerMove(InputAction.CallbackContext context)
         {
             var currentPosition = context.ReadValue<Vector2>();
-
             if (mInputData.IsPointerDownTriggered)
             {
-                var lastPosition = mInputData.PointerCurrentPosition;
+                mInputData.PointerPreviousPosition = mInputData.PointerCurrentPosition;
                 mInputData.PointerCurrentPosition = currentPosition;
-                mInputData.PointerIterationDelta = currentPosition - lastPosition;
-                //Calculate distance from pointer down and perform drag
-                var totalDelta = mInputData.PointerCurrentPosition - mInputData.PointerDownPosition;
-                if (!mInputData.IsDragTriggered && totalDelta.magnitude > mDragOrPressTriggerDistance)
+
+                if (!mInputData.IsDragTriggered && mInputData.PointerTotalDelta.magnitude > mDragOrPressTriggerDistance)
                 {
                     mInputData.TriggerDrag();
                     //TODO: Drag start here
-                    TextDebugger.Instance.Log("Drag start");
+                    TextDebugger.Instance.Log($"Drag start at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, current delta: {mInputData.PointerCurrentDelta}, Total delta magnitude {mInputData.PointerTotalDelta.magnitude}");
 
                 }
                 else if (mInputData.IsDragTriggered)
                 {
                     //TODO: Drag here
-                    TextDebugger.Instance.Log("Drag performed");
-
+                    TextDebugger.Instance.Log($"Drag performed at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, current delta: {mInputData.PointerCurrentDelta}");
                 }
             }
 
             //TODO: Pointer Move can be here ???
-            TextDebugger.Instance.Log("Pointer Move");
+            //TextDebugger.Instance.Log($"Pointer Move at: {currentPosition}");
         }
+
+        private void Update()
+        {
+            if (mRaiseDragOnUpdates && mInputData.IsPointerDownTriggered && mInputData.IsDragTriggered)
+            {
+                //TODO: Drag here
+                TextDebugger.Instance.Log($"Drag performed at: {mInputData.PointerCurrentPosition}, prev position: {mInputData.PointerPreviousPosition}, currend delta: {mInputData.PointerCurrentDelta}");
+            }
+        }
+
+        #region Helpers
 
         private List<InteractionObject> Trace3dObjects(Vector2 coord)
         {
@@ -150,13 +172,20 @@ namespace ViJApps
             return results.Count > 0;
         }
 
-        private void Update()
+        private bool TryReadPointerPosition(InputAction.CallbackContext context, out Vector2 pointerPosition)
         {
-            if (mRaiseDragOnUpdates && mInputData.IsPointerDownTriggered && mInputData.IsDragTriggered)
+            if (context.control.device is Pointer pointer)
             {
-                //TODO: Drag here
-                TextDebugger.Instance.Log("Drag performed");
+                pointerPosition = pointer.position.ReadValue();
+                return true;
+            }
+            else
+            {
+                pointerPosition = Vector2.zero;
+                return false;
             }
         }
+
+        #endregion
     }
 }

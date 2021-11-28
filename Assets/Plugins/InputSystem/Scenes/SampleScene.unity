@@ -591,6 +591,10 @@ PrefabInstance:
       propertyPath: mRaiseDragOnUpdates
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1728285502329229932, guid: 939b897ee82d442dfaf5b95a59923922, type: 3}
+      propertyPath: mDragOrPressTriggerDistance
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2360946131813771847, guid: 939b897ee82d442dfaf5b95a59923922, type: 3}
       propertyPath: m_RootOrder
       value: 2

@@ -9,6 +9,5 @@ namespace ViJApps
     /// </summary>
     public class InteractionObjectIgnorer : MonoBehaviour
     {
-
     }
 }

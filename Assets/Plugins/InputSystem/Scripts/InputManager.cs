@@ -13,6 +13,7 @@ namespace ViJApps
         /// This parameters decides how far should drag perform to call Drag. If distance is less, press will be performed
         /// </summary>
         [SerializeField] private int mDragOrPressTriggerDistance = 0;
+        [SerializeField] private bool mRaiseDragOnUpdates = true;
 
         private InputDataContainer mInputData = new InputDataContainer();
 
@@ -78,10 +79,12 @@ namespace ViJApps
             if (!mInputData.IsDragTriggered)
             {
                 //TODO: Press here
+                Debug.Log("Press");
             }
             else
             {
                 //TODO: Drag end here
+                Debug.Log("Drag end");
             }
 
             //TODO: Pointer up here
@@ -110,10 +113,13 @@ namespace ViJApps
                 {
                     mInputData.TriggerDrag();
                     //TODO: Drag start here
+
+                    Debug.Log("Drag start");
                 }
                 else if (mInputData.IsDragTriggered)
                 {
                     //TODO: Drag here
+                    Debug.Log("Drag");
                 }
             }
 
@@ -139,7 +145,10 @@ namespace ViJApps
 
         private void Update()
         {
-
+            if (mRaiseDragOnUpdates && mInputData.IsPointerDownTriggered && mInputData.IsDragTriggered)
+            {
+                //TODO: Drag here
+            }
         }
     }
 }

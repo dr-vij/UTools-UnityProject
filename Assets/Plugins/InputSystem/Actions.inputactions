@@ -528,11 +528,11 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "PointerMove",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "385f896f-f381-4537-bc4b-590cd164f0f3",
                     "expectedControlType": "Vector2",
                     "processors": "",

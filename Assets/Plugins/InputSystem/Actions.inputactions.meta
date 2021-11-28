@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: Assets/Plugins/InputSystem/Actions.cs
   wrapperClassName: Actions
-  wrapperCodeNamespace: ViJ
+  wrapperCodeNamespace: ViJApps

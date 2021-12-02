@@ -163,45 +163,6 @@ namespace ViJApps
 
         #region Helpers
 
-        private int mRaycastCapacity = 100;
-        private RaycastHit[] mHits;
-        private int mCurrentHitCount;
-        private IComparer<RaycastHit> mHitComparer = new FuncComparer<RaycastHit>((hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
-        private int mRaycastLayerMask;
-
-        public int RaycastCapacity
-        {
-            get => mRaycastCapacity;
-            set
-            {
-                mRaycastCapacity = value;
-                RefreshCapacityArray();
-            }
-        }
-
-        private void RefreshCapacityArray()
-        {
-            Array.Resize(ref mHits, mRaycastCapacity);
-        }
-
-        public void TraceCamera(Vector2 position, Camera cam)
-        {
-            //This trace is mono only at this time 
-            var ray = cam.ScreenPointToRay(position, Camera.MonoOrStereoscopicEye.Mono);
-            var raycastLimitPlane = new Plane(-cam.transform.forward, cam.transform.position + cam.transform.forward * cam.farClipPlane);
-            raycastLimitPlane.Raycast(ray, out var rayDistance);
-            mCurrentHitCount = Physics.RaycastNonAlloc(ray, mHits, rayDistance, mRaycastLayerMask);
-            Array.Sort(mHits, 0, mCurrentHitCount, mHitComparer);
-        }
-
-        private bool IsOverUI(Vector2 pos)
-        {
-            var eventData = new PointerEventData(EventSystem.current) { position = pos };
-            var results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, results);
-            return results.Count > 0;
-        }
-
         private bool TryReadPointerPosition(InputAction.CallbackContext context, out Vector2 pointerPosition)
         {
             if (context.control.device is Pointer pointer)
@@ -209,11 +170,10 @@ namespace ViJApps
                 pointerPosition = pointer.position.ReadValue();
                 return true;
             }
-            else
-            {
-                pointerPosition = Vector2.zero;
-                return false;
-            }
+
+            //Default unsuccessfull return
+            pointerPosition = Vector2.zero;
+            return false;
         }
 
         #endregion

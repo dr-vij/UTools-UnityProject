@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -162,11 +163,35 @@ namespace ViJApps
 
         #region Helpers
 
-        private List<InteractionObject> Trace3dObjects(Vector2 coord)
+        private int mRaycastCapacity = 100;
+        private RaycastHit[] mHits;
+        private int mCurrentHitCount;
+        private IComparer<RaycastHit> mHitComparer = new FuncComparer<RaycastHit>((hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
+        private int mRaycastLayerMask;
+
+        public int RaycastCapacity
         {
-            foreach (var camera in mCameras)
-                camera.ScreenPointToRay(coord);
-            return new List<InteractionObject>();
+            get => mRaycastCapacity;
+            set
+            {
+                mRaycastCapacity = value;
+                RefreshCapacityArray();
+            }
+        }
+
+        private void RefreshCapacityArray()
+        {
+            Array.Resize(ref mHits, mRaycastCapacity);
+        }
+
+        public void TraceCamera(Vector2 position, Camera cam)
+        {
+            //This trace is mono only at this time 
+            var ray = cam.ScreenPointToRay(position, Camera.MonoOrStereoscopicEye.Mono);
+            var raycastLimitPlane = new Plane(-cam.transform.forward, cam.transform.position + cam.transform.forward * cam.farClipPlane);
+            raycastLimitPlane.Raycast(ray, out var rayDistance);
+            mCurrentHitCount = Physics.RaycastNonAlloc(ray, mHits, rayDistance, mRaycastLayerMask);
+            Array.Sort(mHits, 0, mCurrentHitCount, mHitComparer);
         }
 
         private bool IsOverUI(Vector2 pos)

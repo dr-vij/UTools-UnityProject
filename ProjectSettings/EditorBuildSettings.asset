@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Plugins/ViJApps/InputSystem/Scenes/SampleScene.unity
+    path: Assets/Plugins/ViJTools/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 6e4924ee4957c4d04bfcbda9e62a9b90, type: 2}

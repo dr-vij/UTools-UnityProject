@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ViJApps
+namespace ViJTools
 {
     /// <summary>
     /// This object is used to remove object from interaction hierarchy

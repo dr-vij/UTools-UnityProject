@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ViJApps
+namespace ViJTools
 {
     public static class UnityEventExtensions
     {

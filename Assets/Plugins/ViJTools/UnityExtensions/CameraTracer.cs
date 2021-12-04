@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ViJApps
+namespace ViJTools
 {
     public class CameraTracer
     {

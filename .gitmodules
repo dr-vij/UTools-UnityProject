@@ -1,0 +1,3 @@
+[submodule "Assets/Plugins/ViJTools"]
+	path = Assets/Plugins/ViJTools
+	url = git@github.com:dr-vij/ViJTools.git

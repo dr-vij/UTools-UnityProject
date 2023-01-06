@@ -1,5 +1,5 @@
 [submodule "Assets/Plugins/ViJTools"]
-	path = UTools-UnityProject/Assets/Plugins/ViJTools
+	path = UTools-UnityProject/Assets/Plugins/UTools
 url=git@github.com:dr-vij/UTools.git
 [submodule "Assets/Plugins/MeshTools"]
 	path = UTools-UnityProject/Assets/Plugins/MeshTools

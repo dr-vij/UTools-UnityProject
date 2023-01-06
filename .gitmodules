@@ -7,3 +7,6 @@ url=git@github.com:dr-vij/UTools.git
 [submodule "TextureCanvasSourceGenerators"]
 	path = CanvasTextureSourceGenerators/TextureCanvasSourceGenerators
 url=git@github.com:dr-vij/CanvasTextureSourceGenerators.git
+[submodule "UTools-UnityProject/Assets/Plugins/CanvasTexture"]
+	path = UTools-UnityProject/Assets/Plugins/CanvasTexture
+	url = git@github.com:dr-vij/CanvasTexture.git

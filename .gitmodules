@@ -1,6 +1,6 @@
 [submodule "Assets/Plugins/ViJTools"]
 	path = Assets/Plugins/ViJTools
-	url = git@github.com:dr-vij/ViJTools.git
+url=git@github.com:dr-vij/UTools.git
 [submodule "Assets/Plugins/MeshTools"]
 	path = Assets/Plugins/MeshTools
 	url = git@github.com:dr-vij/MeshTools.git

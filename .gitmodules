@@ -4,3 +4,6 @@ url=git@github.com:dr-vij/UTools.git
 [submodule "Assets/Plugins/MeshTools"]
 	path = UTools-UnityProject/Assets/Plugins/MeshTools
 	url = git@github.com:dr-vij/MeshTools.git
+[submodule "TextureCanvasSourceGenerators"]
+	path = CanvasTextureSourceGenerators/TextureCanvasSourceGenerators
+url=git@github.com:dr-vij/CanvasTextureSourceGenerators.git
